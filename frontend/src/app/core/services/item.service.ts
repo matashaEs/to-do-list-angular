@@ -1,37 +1,36 @@
-// import { Injectable, inject } from '@angular/core';
-// import { environment } from '../../../environments/environment';
-// import { HttpClient } from '@angular/common/http';
-// import { CategoryInterface } from '../interfaces/models/category.model.interface';
-// import { CommentInterface } from '../interfaces/models/comment.model.interface';
+import { Injectable, inject } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ItemInterface } from '../interfaces/models/item.interceptor';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class CategoryService {
-//   baseUrl = environment.BACKEND_API_URL+'/api/categories';
-//   httpClient = inject(HttpClient);
+@Injectable({
+  providedIn: 'root'
+})
+export class ItemService {
+  baseUrl = environment.BACKEND_API_URL+'/api/tasks';
+  httpClient = inject(HttpClient);
 
-//   constructor() { }
+  constructor() { }
 
-//   getCategoryBySug(slug: string) {
-//     return this.httpClient.get<CategoryInterface>(`${this.baseUrl}/slug/${slug}`);
-//   }
+  getItemBySug(slug: string) {
+    return this.httpClient.get<ItemInterface>(`${this.baseUrl}/slug/${slug}`);
+  }
 
-//   getCategories() {
-//     return this.httpClient.get<CategoryInterface[]>(this.baseUrl);
-//   }
+  getItems() {
+    return this.httpClient.get<ItemInterface[]>(this.baseUrl);
+  }
 
-//   deleteCategory(id: number) {
-//     return this.httpClient.delete(`${this.baseUrl}`, {
-//       body: {id}
-//     });
-//   }
+  deleteItem(id: number) {
+    return this.httpClient.delete(`${this.baseUrl}`, {
+      body: {id}
+    });
+  }
 
-//   addCategory({name}:{name: string}) {
-//     return this.httpClient.post<CategoryInterface>(this.baseUrl, {name})
-//   }
+  addItem({name}:{name: string}) {
+    return this.httpClient.post<ItemInterface>(this.baseUrl, {name})
+  }
 
-//   updateCategory({id, name}: {id: number, name: string}) {
-//     return this.httpClient.put<CategoryInterface>(this.baseUrl, {id, name});
-//   }
-// }
+  updateItem({id, name}: {id: number, name: string}) {
+    return this.httpClient.put<ItemInterface>(this.baseUrl, {id, name});
+  }
+}
