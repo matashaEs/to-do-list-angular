@@ -7,8 +7,8 @@ import { ItemInterface } from '../../../core/interfaces/models/item.interceptor'
   selector: 'app-task-detail',
   standalone: true,
   imports: [],
-  templateUrl: './item-detail.component.html',
-  styleUrl: './item-detail.component.scss'
+  templateUrl: './task-detail.component.html',
+  styleUrl: './task-detail.component.scss'
 })
 export class ItemDetailComponent {
   route = inject(ActivatedRoute);
