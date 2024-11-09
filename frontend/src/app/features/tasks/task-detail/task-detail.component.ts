@@ -1,31 +1,70 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemService } from '../../../core/services/item.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ItemInterface } from '../../../core/interfaces/models/item.interceptor';
 
 @Component({
-  selector: 'app-task-detail',
+  selector: 'app-item-detail',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatCardModule
+  ],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.scss'
 })
-export class ItemDetailComponent {
-  route = inject(ActivatedRoute);
+export class TaskDetailComponent {
+  fb = inject(FormBuilder);
   itemService = inject(ItemService);
-  item?: ItemInterface;
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  item: ItemInterface | undefined; 
+  
+  form = this.fb.group({
+    title: ['', Validators.required],
+    id: ['']
+  })
 
   constructor() {
-    this.route.params.subscribe(params => {
-      let slug = params['item'];
-
-      this.loadItem(slug);
-    });
+    this.route.params.subscribe((data) => {
+      const slug = data['slug'];
+      if(slug) {
+        this.itemService.getItemBySug(slug).subscribe((item) => {
+          this.item = item;
+          this.form.patchValue({
+            id: item.id+'',
+            title: item.title
+          })
+          this.form.updateValueAndValidity();
+        });
+      }
+    })
   }
 
-  loadItem(slug: string) {
-    this.itemService.getItemBySug(slug).subscribe((data) => {
-      this.item = data;
+  create() {
+    if(this.form.invalid) return
+
+    this.itemService.addItem({title: this.form.value.title!}).subscribe(() => {
+      this.router.navigate(['/items']);
+    })
+  }
+
+  update() {
+    if(this.form.invalid) return
+
+    this.itemService.updateItem({
+      id: parseInt(this.form.value.id!),
+      title: this.form.value.title!
+    }).subscribe(() => {
+      alert('Item updated');
     })
   }
 }

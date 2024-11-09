@@ -7,7 +7,7 @@ import { ItemInterface } from '../interfaces/models/item.interceptor';
   providedIn: 'root'
 })
 export class ItemService {
-  baseUrl = environment.BACKEND_API_URL+'/api/tasks';
+  baseUrl = environment.BACKEND_API_URL+'/api/items';
   httpClient = inject(HttpClient);
 
   constructor() { }
@@ -26,11 +26,11 @@ export class ItemService {
     });
   }
 
-  addItem({name}:{name: string}) {
-    return this.httpClient.post<ItemInterface>(this.baseUrl, {name})
+  addItem({title}:{title: string}) {
+    return this.httpClient.post<ItemInterface>(this.baseUrl, {title})
   }
 
-  updateItem({id, name}: {id: number, name: string}) {
-    return this.httpClient.put<ItemInterface>(this.baseUrl, {id, name});
+  updateItem({id, title}: {id: number, title: string}) {
+    return this.httpClient.put<ItemInterface>(this.baseUrl, {id, title});
   }
 }
