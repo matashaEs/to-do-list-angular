@@ -3,12 +3,14 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { SelectionModel } from '@angular/cdk/collections';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ItemInterface } from '../../../core/interfaces/models/item.interceptor';
 import moment from 'moment';
 import { ItemService } from '../../../core/services/item.service';
 import { MatButtonModule } from '@angular/material/button';
 import { lastValueFrom } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-tasks-list',
@@ -18,7 +20,9 @@ import { lastValueFrom } from 'rxjs';
     MatCheckboxModule,
     MatIconModule,
     RouterModule,
-    MatButtonModule
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss'
@@ -27,9 +31,12 @@ import { lastValueFrom } from 'rxjs';
 export class TasksListComponent {
   moment = moment;
   displayedColumns: string[] = ['select', 'title', 'status', 'createdAt', 'updatedAt', 'actions'];
+  statuses = ['ToDo', 'In Progress', 'Done'];
   dataSource = new MatTableDataSource<ItemInterface>([]);
   selection = new SelectionModel<ItemInterface>(true, []);
   itemService = inject(ItemService);
+  selectedStatus: string = '';
+  router = inject(Router);
 
   constructor() {
     this.loadTasks();
@@ -52,6 +59,17 @@ export class TasksListComponent {
     this.selection.select(...this.dataSource.data);
   }
 
+  updateStatus(newStatus: string, taskId: number) {
+
+    this.itemService.updateItemStatus({
+      id: taskId,
+      status: newStatus,
+
+    }).subscribe(() => {
+      this.router.navigate(['/']);
+    })
+  }
+  
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: ItemInterface): string {
     if (!row) {

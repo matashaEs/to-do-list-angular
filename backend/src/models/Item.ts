@@ -17,7 +17,7 @@ export class Item extends Model<Item> {
   @Default('todo')
   @Column({
     allowNull: false,
-    type: DataType.ENUM('todo', 'done')
+    type: DataType.ENUM('Todo', 'In Progress','Done')
   })
   status?: string;
  

@@ -56,8 +56,9 @@ export const addItemController = async(req: Request, res: Response): Promise<voi
 export const updateItemController = async(req: Request, res: Response) => {
 
     const schema = z.object({
-        title: z.string(),
-        id: z.number()
+        id: z.number(),
+        status: z.enum(['ToDo', 'In Progress', 'Done']).optional(),
+        title: z.string().optional()
     });
 
     const schemaValidator = schema.safeParse(req.body);
@@ -66,14 +67,17 @@ export const updateItemController = async(req: Request, res: Response) => {
         return
     }
 
-    let {title, id} = req.body;
+    let {id, title, status} = req.body;
+    let slug = "";
 
-    let slug = generateSlug(title);
+    if(title) {
+        slug = generateSlug(title);
 
-    const itemBySlug = await getItemBySlug(slug);
-  
-    if(itemBySlug) {
-        res.status(400). json({message: 'Item already exists'})
+        const itemBySlug = await getItemBySlug(slug);
+      
+        if(itemBySlug) {
+            res.status(400). json({message: 'Item already exists'})
+        }
     }
 
     let dbItem = await getItemById(id);
@@ -83,7 +87,7 @@ export const updateItemController = async(req: Request, res: Response) => {
         return
     }
 
-    let updatedItem = await updateItem(title, slug, id);
+    let updatedItem = await updateItem(id, title, slug, status);
 
     res.json(updatedItem);
 }

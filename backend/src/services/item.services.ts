@@ -40,13 +40,14 @@ export async function getItemById(id: number){
     return item;
 }
 
-export async function updateItem(title: string, slug: string, id: number) {
+export async function updateItem(id: number, title: string, slug: string, status: "ToDo" | "In Progress" | "Done") {
     const item = await Item.findByPk(id);
     if(!item) {
         throw new Error('Item not found');
     }
     if(title) item.title = title;
     if(slug) item.slug = slug;
+    if(status) item.status = status;
     await item.save();
 
     return item;

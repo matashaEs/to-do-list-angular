@@ -30,7 +30,11 @@ export class ItemService {
     return this.httpClient.post<ItemInterface>(this.baseUrl, {title})
   }
 
-  updateItem({id, title}: {id: number, title: string}) {
+  updateItem({id, title}:{id: number, title: string}) {
     return this.httpClient.put<ItemInterface>(this.baseUrl, {id, title});
+  }
+
+  updateItemStatus({id, status}:{id: number, status: string}){
+    return this.httpClient.put<ItemInterface>(this.baseUrl, {id, status});
   }
 }
