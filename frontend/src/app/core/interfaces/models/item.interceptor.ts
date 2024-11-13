@@ -1,7 +1,7 @@
 export interface ItemInterface {
     id: number;
     title: string;
-    status: 'todo' | 'done';
+    status: 'Todo' | 'In Progress' | "Done";
     userId: number;
     createdAt: string;
     updatedAt: string;
