@@ -8,6 +8,12 @@ export class Item extends Model<Item> {
   })
   title?: string;
 
+  @Column({
+    allowNull: false,
+    unique: true
+  }) 
+  slug?: string
+
   @Default('todo')
   @Column({
     allowNull: false,

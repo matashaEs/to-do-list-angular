@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+import { generateSlug } from "../shared/general.util";
 import { z } from "zod";
 import { User } from "../models/User";
-import { addItem, deleteItem, getAllItems, getItem, getItemById, updateItem } from "../services/item.services";
+import { addItem, deleteItem, getAllItems, getItemBySlug, getItemById, updateItem } from "../services/item.services";
 
   
 
@@ -12,6 +13,17 @@ export const getItemsController = async(req: Request, res: Response) => {
     const items = await getAllItems(userId);
 
     res.json(items);
+}
+
+export const getItemBySlugController = async (req: Request, res: Response) => {
+    const slug = req.params.slug;
+    const item = await getItemBySlug(slug);
+
+    if(!item) {
+        res.status(404).json({message: 'Task not found'})
+    }
+
+    res.json(item);
 }
 
 export const addItemController = async(req: Request, res: Response): Promise<void> =>{
@@ -28,15 +40,15 @@ export const addItemController = async(req: Request, res: Response): Promise<voi
     const {title} = req.body;  
     const user = (req as any).user as User;
     const userId = user.get('id');
+    let slug = generateSlug(title);
 
-    const itemTitle = await getItem(title);
+    const itemBySlug = await getItemBySlug(slug);
 
-    if(itemTitle) {
-        res.status(400).json({message: 'Item already exists'});
-        return
+    if(itemBySlug) {
+        slug = generateSlug(title, true);
     }
 
-    const item = await addItem(title, userId);
+    const item = await addItem(title, slug, userId);
 
     res.json(item);
 }
@@ -56,11 +68,12 @@ export const updateItemController = async(req: Request, res: Response) => {
 
     let {title, id} = req.body;
 
-    const itemTitle = await getItem(title);
+    let slug = generateSlug(title);
 
-    if(itemTitle) {
-        res.status(400).json({message: 'Item already exists'});
-        return
+    const itemBySlug = await getItemBySlug(slug);
+  
+    if(itemBySlug) {
+        res.status(400). json({message: 'Item already exists'})
     }
 
     let dbItem = await getItemById(id);
@@ -70,7 +83,7 @@ export const updateItemController = async(req: Request, res: Response) => {
         return
     }
 
-    let updatedItem = await updateItem(title, id);
+    let updatedItem = await updateItem(title, slug, id);
 
     res.json(updatedItem);
 }

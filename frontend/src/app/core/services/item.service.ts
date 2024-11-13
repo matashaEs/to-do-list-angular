@@ -12,7 +12,7 @@ export class ItemService {
 
   constructor() { }
 
-  getItemBySug(slug: string) {
+  getItemBySlug(slug: string) {
     return this.httpClient.get<ItemInterface>(`${this.baseUrl}/slug/${slug}`);
   }
 

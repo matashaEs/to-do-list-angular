@@ -37,7 +37,7 @@ export class TaskDetailComponent {
     this.route.params.subscribe((data) => {
       const slug = data['slug'];
       if(slug) {
-        this.itemService.getItemBySug(slug).subscribe((item) => {
+        this.itemService.getItemBySlug(slug).subscribe((item) => {
           this.item = item;
           this.form.patchValue({
             id: item.id+'',
@@ -64,7 +64,7 @@ export class TaskDetailComponent {
       id: parseInt(this.form.value.id!),
       title: this.form.value.title!
     }).subscribe(() => {
-      alert('Item updated');
+      this.router.navigate(['/']);
     })
   }
 }
