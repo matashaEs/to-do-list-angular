@@ -26,7 +26,7 @@ import { lastValueFrom } from 'rxjs';
 
 export class TasksListComponent {
   moment = moment;
-  displayedColumns: string[] = ['select', 'id', 'title', 'status', 'createdAt', 'updatedAt', 'actions'];
+  displayedColumns: string[] = ['select', 'title', 'status', 'createdAt', 'updatedAt', 'actions'];
   dataSource = new MatTableDataSource<ItemInterface>([]);
   selection = new SelectionModel<ItemInterface>(true, []);
   itemService = inject(ItemService);

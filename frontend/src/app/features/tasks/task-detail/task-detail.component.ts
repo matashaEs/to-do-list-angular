@@ -53,7 +53,7 @@ export class TaskDetailComponent {
     if(this.form.invalid) return
 
     this.itemService.addItem({title: this.form.value.title!}).subscribe(() => {
-      this.router.navigate(['/items']);
+      this.router.navigate(['/']);
     })
   }
 
