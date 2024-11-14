@@ -1,26 +1,61 @@
-<form (submit)="submit()" [formGroup]="form">
-    <div>
-        <label for="email">Email</label>
-        <input formControlName="email" type="email" id="email" name="email" placeholder="Email">
-    </div>
+<div class="form-container">
+    <form (submit)="submit()" [formGroup]="form">
+        <div class="input-container">
+            <label class="input-label" for="email">Email</label>
+            <input class="input" formControlName="email" type="email" id="email" name="email" placeholder="Email">
+            @if(
+                form.get('email')?.touched &&
+                form.get('email')?.errors
+                ){
+                @if(form.get('email')?.errors?.['required']){
+                <div class="error">Email is required</div>
+                }
+    
+                @if(form.get('email')?.errors?.['email']){
+                <div class="error">
+                    Email is invalid
+                </div>
+                }
+                }
+        </div>
 
-    <div>
-        <label for="password">Password</label>
-        <input formControlName="password" type="password" id="password" name="password" placeholder="Password">
-    </div>
+        <div class="input-container">
+            <label class="input-label" for="password">Password</label>
+            <input class="input" formControlName="password" type="password" id="password" name="password"
+                placeholder="Password">
 
-    <!-- <div class="flex justify-end mt-5">
-        <button [disabled]="!form.valid" type="submit">Login</button>
+            @if(
+            form.get('password')?.touched &&
+            form.get('password')?.errors
+            ){
+            @if(form.get('password')?.errors?.['required']){
+            <div class="error">Password is required</div>
+            }
 
-    </div> -->
+            @if(form.get('password')?.errors?.['minlength']){
+            <div class="error">
+                Password must be at least {{
+                form.get('password')?.errors?.['minlength'].requiredLength
+                }} characters
+            </div>
+            }
 
-    <div>
-        <button [disabled]="!form.valid" type="submit">Login</button>
+            @if(form.get('password')?.errors?.['pattern']){
+            <div class="error">
+                Password must contain at least one uppercase letter, one lowercase letter and one number.
+            </div>
+            }
+            }
+        </div>
 
-    </div>
+        <div class="button-container">
+            <button class="button small-text" [disabled]="!form.valid" type="submit">Login</button>
 
-    <div>Don't have an account? <a routerLink="/auth/register">Register</a></div>
+        </div>
 
-    <div>Forgot your password? <a routerLink="/auth/forgot-password">Reset</a>
-    </div>
-</form>
+        <div class="small-text link-text">Don't have an account? <a routerLink="/auth/register">Register</a></div>
+
+        <div class="small-text link-text">Forgot your password? <a routerLink="/auth/forgot-password">Reset</a>
+        </div>
+    </form>
+</div>

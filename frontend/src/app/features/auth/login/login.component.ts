@@ -21,7 +21,11 @@ export class LoginComponent {
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['',  Validators.required]
+    password: ['',  [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+    ]]
   })
 
   submit() { 
