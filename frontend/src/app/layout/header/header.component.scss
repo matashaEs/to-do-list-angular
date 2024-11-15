@@ -1,0 +1,25 @@
+.header {
+    background: var(--white);
+    padding: 16px 0;
+
+    a {
+        text-decoration: none;
+        color: var(--font);
+    }
+
+    &-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &-heading {
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    &-links {
+        display: flex;
+        gap: 24px;
+    }
+}
