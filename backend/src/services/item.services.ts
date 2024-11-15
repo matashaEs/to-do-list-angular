@@ -1,5 +1,6 @@
+import { conection } from "../database";
 import { Item } from "../models/Item";
-import { User } from "../models/User";
+
 
 export async function getAllItems(userId: number) {
     const items = await Item.findAll({
@@ -7,6 +8,7 @@ export async function getAllItems(userId: number) {
             userId
         },
         order: [
+            [conection.literal("FIELD(status, 'In Progress', 'Todo', 'Done')"), 'ASC'],
             ['createdAt', 'DESC']
         ]
     });

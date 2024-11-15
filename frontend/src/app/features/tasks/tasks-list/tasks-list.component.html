@@ -1,12 +1,12 @@
-<div>
-    <h1 class="text-left">My tasks</h1>
+<div class="container">
+    <h1 class="heading">My tasks</h1>
 
-    <div>
-        <button mat-raised-button routerLink="/add">Create</button>
-        <button (click)="deleteSelectedTasks()" [disabled]="!selection.hasValue()" mat-raised-button>Delete</button>
+    <div class="button-container">
+        <button class="list-button" mat-raised-button routerLink="/add">Create</button>
+        <button class="list-button" (click)="deleteSelectedTasks()" [disabled]="!selection.hasValue()" mat-raised-button>Delete</button>
     </div>
 
-    <table mat-table [dataSource]="dataSource">
+    <table class="table" mat-table [dataSource]="dataSource">
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
@@ -33,8 +33,7 @@
             <th mat-header-cell *matHeaderCellDef> Status </th>
             <td mat-cell *matCellDef="let element">
                 <mat-form-field>
-                    <mat-label>{{element.status}}</mat-label>
-                    <mat-select (selectionChange)="updateStatus($event.value, element.id)">
+                    <mat-select (click)="$event.stopPropagation()" [(value)]=element.status (selectionChange)="updateStatus($event.value, element.id)">
                       @for (status of statuses; track status) {
                         <mat-option [value]="status">{{status}}</mat-option>
                       }
@@ -42,15 +41,6 @@
                 </mat-form-field>
             </td>
         </ng-container>
-
-        <mat-form-field>
-            <mat-label>Status</mat-label>
-            <mat-select>
-              @for (status of statuses; track status) {
-                <mat-option [value]="status">{{status}}</mat-option>
-              }
-            </mat-select>
-        </mat-form-field>
 
         <ng-container matColumnDef="createdAt">
             <th mat-header-cell *matHeaderCellDef> Created At </th>

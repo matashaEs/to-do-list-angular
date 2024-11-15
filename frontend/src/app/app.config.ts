@@ -14,5 +14,5 @@ export const appConfig: ApplicationConfig = {
       authInterceptor,
       errorInterceptor
     ])), 
-    provideAnimationsAsync()]
+    provideAnimationsAsync(), provideAnimationsAsync()]
 };

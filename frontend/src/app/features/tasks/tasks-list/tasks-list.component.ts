@@ -66,7 +66,7 @@ export class TasksListComponent {
       status: newStatus,
 
     }).subscribe(() => {
-      this.router.navigate(['/']);
+      window.location.reload();
     })
   }
   
