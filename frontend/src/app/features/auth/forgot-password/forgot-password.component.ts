@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -18,6 +18,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class ForgotPasswordComponent {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
+  router = inject(Router);
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]]
@@ -26,7 +27,7 @@ export class ForgotPasswordComponent {
   submit() {
     this.authService.forgotPassword(this.form.value.email!).subscribe({
       next: () => {
-        console.log('forgot password');
+        this.router.navigate(['/auth/login']);
       },
       error: (err) => {
         if(err && err.error && err.error.message){
